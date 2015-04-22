@@ -16,5 +16,12 @@ module ExceptionalMiddleware
         end
       end
     end
+
+    context Subject.name do
+      subject { Subject }
+      should "have a version" do
+        assert_match(/\d+\.\d+\.\d+/, Subject::VERSION)
+      end
+    end
   end
 end

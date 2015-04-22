@@ -1,4 +1,3 @@
-require "exceptional_middleware/version"
 
 # Remote exception handling via a middleware chain.
 module ExceptionalMiddleware
