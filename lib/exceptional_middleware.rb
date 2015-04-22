@@ -1,7 +1,16 @@
+require "remotely_exceptional"
 
 # Remote exception handling via a middleware chain.
 module ExceptionalMiddleware
-  # The namespace underwhich middleware components live.
+  # The namespace underwhich Handler components live.
+  module Handler
+  end
+
+  # The namespace underwhich Matcher components live.
+  module Matcher
+  end
+
+  # The namespace underwhich Middleware components live.
   module Middleware
   end
 end
