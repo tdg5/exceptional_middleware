@@ -6,7 +6,10 @@ module ExceptionalMiddleware
 
     [
       Subject,
+      Subject::Handler,
+      Subject::Matcher,
       Subject::Middleware,
+      Subject::Strategy,
     ].each do |mod|
       context mod.name do
         subject { mod }

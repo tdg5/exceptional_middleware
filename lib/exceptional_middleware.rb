@@ -13,4 +13,8 @@ module ExceptionalMiddleware
   # The namespace underwhich Middleware components live.
   module Middleware
   end
+
+  # The namespace underwhich Strategy components live.
+  module Strategy
+  end
 end
