@@ -1,6 +1,9 @@
 module ExceptionalMiddleware
   class MiddlewareStack
+    extend Forwardable
     include Enumerable
+
+    def_delegator :middlewares, :each
 
     # Create a new MiddlewareStack.
     def initialize
@@ -19,10 +22,6 @@ module ExceptionalMiddleware
       assert_index(existing_middleware, *existing_args)
       @middlewares.delete([existing_middleware, existing_args])
       true
-    end
-
-    def each
-      middlewares.each { |mw| yield mw }
     end
 
     # Inserts a new middleware after an existing_middleware.
