@@ -36,6 +36,12 @@ module ExceptionalMiddleware::Handler
         end
 
         context "::handle" do
+          setup do
+            # Reset middleware!
+            new_stack = ExceptionalMiddleware::MiddlewareStack.new
+            subject.instance_variable_set(:@middleware, new_stack)
+          end
+
           context "without middleware" do
             should "call the handler method with the remote exception" do
               remote_exception = :remote_exception
@@ -46,12 +52,6 @@ module ExceptionalMiddleware::Handler
           end
 
           context "with middleware" do
-            setup do
-              # Reset middleware!
-              new_stack = ExceptionalMiddleware::MiddlewareStack.new
-              subject.instance_variable_set(:@middleware, new_stack)
-            end
-
             should "wrap the handler in all middlewares" do
               call_order = sequence(:call_order)
 
