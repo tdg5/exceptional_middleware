@@ -5,6 +5,18 @@ module ExceptionalMiddleware::Middleware
   class CircuitBreakerTest < ExceptionalMiddleware::TestCase
     Subject = CircuitBreaker
 
+    module TestHaltImplementer
+      def self.included(includer)
+        includer.extend(ClassMethods)
+      end
+
+      module ClassMethods
+        def halt?(remote_exception)
+          raise RuntimeError
+        end
+      end
+    end
+
     module TestIncluder
       include Subject
     end
@@ -13,7 +25,20 @@ module ExceptionalMiddleware::Middleware
       subject { TestIncluder }
 
       context "::halt?" do
-        should "raise NotImplementedError" do
+        should "defer to super if a super method exists" do
+          # Create the module so we can reference it in the closure.
+          super_mod = Module.new.instance_eval do
+            include TestHaltImplementer
+            include Subject
+          end
+          # Should raise RuntimeError if super was called correctly
+          exception = assert_raises(RuntimeError) { super_mod.halt?(:foo) }
+          # Should include circuit_breaker_middleware in the stack if it's
+          # really been invoked via super
+          assert_match(/circuit_breaker_middleware/, exception.backtrace[1])
+        end
+
+        should "raise NotImplementedError if super not available" do
           assert_raises(NotImplementedError) do
             subject.halt?(:foo)
           end

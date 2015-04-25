@@ -11,7 +11,8 @@ module ExceptionalMiddleware::Middleware::CircuitBreaker
   module ClassMethods
     # Indicates if the circuit breaker has been tripped and whether execution
     # should be halted or whether the successor should be invoked instead. Must
-    # be implemeneted by including Class/Module.
+    # be implemeneted via super or by overriding the method in the including
+    # Class/Module.
     #
     # @param remote_exception [RemotelyExceptional::RemoteException] The remote
     #   exception that needs handling.
@@ -21,6 +22,7 @@ module ExceptionalMiddleware::Middleware::CircuitBreaker
     #   should be invoked. When true, the successor method will not be invoked.
     #   When false, the successor will be invoked.
     def halt?(remote_exception)
+      return super if defined?(super)
       raise NotImplementedError, "#{__method__} must be implemented by including class!"
     end
 
