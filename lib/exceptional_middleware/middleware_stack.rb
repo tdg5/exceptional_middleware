@@ -102,8 +102,9 @@ module ExceptionalMiddleware
     def assert_index(existing_middleware, *existing_args)
       existing_pair = [existing_middleware, existing_args]
       idx = @middlewares.index(existing_pair)
-      raise ArgumentError, "Could not find matching middleware for #{existing_pair.inspect}" unless idx
-      idx
+      return idx if idx
+      raise ArgumentError,
+        "Could not find matching middleware for #{existing_pair.inspect}"
     end
 
     def insert(index, middleware, *args)
