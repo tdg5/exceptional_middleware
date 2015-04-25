@@ -4,15 +4,13 @@ module ExceptionalMiddleware::Middleware::CircuitBreaker
   end
 
   module ClassMethods
-    def should_suppress?(remote_exception)
+    def halt?(remote_exception)
       raise NotImplementedError, "#{__method__} must be implemented by including class!"
     end
 
     def wrap(successor)
       lambda do |remote_exception|
-        unless should_suppress?(remote_exception)
-          successor.call(remote_exception)
-        end
+        successor.call(remote_exception) unless halt?(remote_exception)
         nil
       end
     end

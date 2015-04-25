@@ -12,10 +12,10 @@ module ExceptionalMiddleware::Middleware
     context "including module" do
       subject { TestIncluder }
 
-      context "::should_supress?" do
+      context "::halt?" do
         should "raise NotImplementedError" do
           assert_raises(NotImplementedError) do
-            subject.should_suppress?(:foo)
+            subject.halt?(:foo)
           end
         end
       end
@@ -27,7 +27,7 @@ module ExceptionalMiddleware::Middleware
 
         should "call the wrapped method if the call isn't suppressed" do
           remote_exception = :remote_exception
-          subject.expects(:should_suppress?).returns(false)
+          subject.expects(:halt?).returns(false)
           (mck = mock).expects(:call).with(remote_exception)
           thinger = subject.wrap(mck)
           thinger.call(remote_exception)
@@ -35,7 +35,7 @@ module ExceptionalMiddleware::Middleware
 
         should "not call the wrapped method if the call is suppressed" do
           remote_exception = :remote_exception
-          subject.expects(:should_suppress?).returns(true)
+          subject.expects(:halt?).returns(true)
           (mck = mock).expects(:call).never
           thinger = subject.wrap(mck)
           thinger.call(remote_exception)
