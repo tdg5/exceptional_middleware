@@ -42,6 +42,14 @@ module ExceptionalMiddleware::Handler
             subject.instance_variable_set(:@middleware, new_stack)
           end
 
+          context "without handler" do
+            should "raise the remote exception when no handler is available" do
+              (remote_exception = mock).expects(:raise)
+              subject.expects(:respond_to?).with(:handler).returns(false)
+              subject.handle(remote_exception)
+            end
+          end
+
           context "without middleware" do
             should "call the handler method with the remote exception" do
               remote_exception = :remote_exception
