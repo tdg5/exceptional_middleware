@@ -26,7 +26,6 @@ module ExceptionalMiddleware::Middleware
 
       context "::halt?" do
         should "defer to super if a super method exists" do
-          # Create the module so we can reference it in the closure.
           super_mod = Module.new.instance_eval do
             include TestHaltImplementer
             include Subject
@@ -54,16 +53,16 @@ module ExceptionalMiddleware::Middleware
           remote_exception = :remote_exception
           subject.expects(:halt?).returns(false)
           (mck = mock).expects(:call).with(remote_exception)
-          thinger = subject.wrap(mck)
-          thinger.call(remote_exception)
+          wrapper = subject.wrap(mck)
+          wrapper.call(remote_exception)
         end
 
         should "not call the wrapped method if the call is suppressed" do
           remote_exception = :remote_exception
           subject.expects(:halt?).returns(true)
           (mck = mock).expects(:call).never
-          thinger = subject.wrap(mck)
-          thinger.call(remote_exception)
+          wrapper = subject.wrap(mck)
+          wrapper.call(remote_exception)
         end
       end
     end
