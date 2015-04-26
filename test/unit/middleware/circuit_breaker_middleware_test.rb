@@ -3,7 +3,7 @@ require "exceptional_middleware/middleware/circuit_breaker_middleware"
 
 module ExceptionalMiddleware::Middleware
   class CircuitBreakerMiddlewareTest < ExceptionalMiddleware::TestCase
-    Subject = CircuitBreaker
+    Subject = CircuitBreakerMiddleware
 
     context Subject.name do
       subject { Subject }

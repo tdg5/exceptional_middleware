@@ -2,7 +2,7 @@
 # additional exception handling to be short-circuited. In situations where a lot
 # of exceptions are occuring this type of behavior can be useful to prevent
 # futile retries.
-module ExceptionalMiddleware::Middleware::CircuitBreaker
+module ExceptionalMiddleware::Middleware::CircuitBreakerMiddleware
   # Wraps the given successor method in a Proc that adds circuit breaking
   # logic such that the successor is invoked when the {#halt?} method returns
   # false and is not invoked when the {#halt?} method returns true.
